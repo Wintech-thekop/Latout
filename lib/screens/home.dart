@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:layout/screens/detail.dart';
 
+import 'package:http/http.dart' as http;
+import 'dart:async';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -20,17 +23,18 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: FutureBuilder(
-          builder: (context, snapshot) {
-            var data = json.decode(snapshot.data.toString());
+          builder: (context, AsyncSnapshot snapshot) {
+         //   var data = json.decode(snapshot.data.toString());
             return ListView.builder(
               itemBuilder: (BuildContext context, int index) {
-                return myBox(data[index]['title'], data[index]['subtitle'],
-                    data[index]['image_url'], data[index]['details']);
+                return myBox(snapshot.data[index]['title'], snapshot.data[index]['subtitle'],
+                    snapshot.data[index]['image_url'], snapshot.data[index]['details']);
               },
-              itemCount: data.length,
+              itemCount: snapshot.data.length,
             );
           },
-          future: DefaultAssetBundle.of(context).loadString('assets/data.json'),
+//          future: DefaultAssetBundle.of(context).loadString('assets/data.json'),
+          future: getData(),
         ),
       ),
     );
@@ -90,4 +94,15 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
+Future getData() async {
+    // https://raw.githubusercontent.com/UncleEngineer/BasicAPI/main/data.json
+    var url = Uri.https('raw.githubusercontent.com','/Wintech-thekop/Latout/master/assets/data.json');
+    var response = await http.get(url);
+    var result = json.decode(response.body);
+    return result;
+  }
+
+
+
 }

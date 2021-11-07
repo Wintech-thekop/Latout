@@ -38,12 +38,14 @@ class _DetailScreenState extends State<DetailScreen> {
                   color: Colors.blue,
                   fontWeight: FontWeight.bold),
             ),
+            SizedBox(height: 10),
 //            Text(_v2),
             Image.network(_v3),
+            SizedBox(height: 10),
             Text(
               _v4,
               style: TextStyle(
-                fontSize: 15,
+                fontSize: 20,
               ),
             )
           ],
